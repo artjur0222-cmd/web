@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>AI × 藝術｜藝術領域 AI 運用教學網站</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   顏色設定：想換配色，改這裡即可
+   ========================================================= */
+:root{
+  --bg:#F4F2EE; --paper:#FFFFFF; --ink:#1E2124; --muted:#5D646B; --line:#DCD8D1; --soft:#ECE8E1;
+  --visual:#D2513A;  --visual-soft:#FBE7E2;
+  --music:#3D55B8;   --music-soft:#E4E8FA;
+  --perform:#C98A12; --perform-soft:#FAEFD6;
+  --brand:#1E2124; --brand-ink:#FFFFFF;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#15171A; --paper:#1E2125; --ink:#EDEBE7; --muted:#A3A9AF; --line:#353A40; --soft:#272B30;
+    --visual:#F07A63; --visual-soft:#3A2420;
+    --music:#8C9EF0;  --music-soft:#232A45;
+    --perform:#E8B04A; --perform-soft:#3A2F17;
+    --brand:#EDEBE7; --brand-ink:#15171A; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#15171A; --paper:#1E2125; --ink:#EDEBE7; --muted:#A3A9AF; --line:#353A40; --soft:#272B30;
+  --visual:#F07A63; --visual-soft:#3A2420;
+  --music:#8C9EF0;  --music-soft:#232A45;
+  --perform:#E8B04A; --perform-soft:#3A2F17;
+  --brand:#EDEBE7; --brand-ink:#15171A; color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;line-height:1.75;font-size:16px}
+img,video{max-width:100%}
+h1,h2,h3{font-family:"Noto Serif TC","Songti TC","PMingLiU",serif;line-height:1.3;margin:0}
+a{color:inherit}
+.container{max-width:1080px;margin:0 auto;padding:0 18px}
+
+/* 導覽列 */
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--paper)}
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--paper);border-bottom:1px solid var(--line)}
+.topin{display:flex;align-items:center;gap:16px;min-height:62px;flex-wrap:wrap;padding:6px 0}
+.logo{font-family:"Noto Serif TC",serif;font-weight:900;font-size:20px;text-decoration:none;white-space:nowrap}
+.logo span{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:3px;vertical-align:middle}
+nav.main{display:flex;gap:4px;overflow-x:auto;flex:1;scrollbar-width:none}
+nav.main a{text-decoration:none;padding:8px 12px;border-radius:999px;font-weight:500;color:var(--muted);white-space:nowrap}
+nav.main a[aria-current="page"]{background:var(--brand);color:var(--brand-ink)}
+nav.main a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible{outline:3px solid var(--music);outline-offset:2px}
+
+section.page{display:none;padding:34px 0 70px}
+section.page.on{display:block}
+
+/* 首頁 */
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:32px;align-items:center;padding:20px 0 34px}
+@media (max-width:780px){.hero{grid-template-columns:1fr}}
+.hero h1{font-size:clamp(34px,6vw,58px);font-weight:900}
+.hero p{color:var(--muted);font-size:17px;max-width:32em}
+.trio{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;aspect-ratio:3/2}
+.trio div{border-radius:22px;display:flex;align-items:flex-end;padding:14px;color:#fff;font-family:"Noto Serif TC",serif;font-weight:700;font-size:20px}
+.trio .v{background:var(--visual);border-radius:22px 22px 22px 90px}
+.trio .m{background:var(--music);margin-top:30px}
+.trio .p{background:var(--perform);border-radius:90px 22px 22px 22px}
+.cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:780px){.cards3{grid-template-columns:1fr}}
+.cat{background:var(--paper);border-radius:20px;padding:22px;border:1px solid var(--line);border-top:8px solid var(--c);text-decoration:none;display:block}
+.cat h3{font-size:22px;color:var(--c)}
+.cat p{margin:8px 0 0;color:var(--muted)}
+.steps{counter-reset:s;display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:16px}
+@media (max-width:780px){.steps{grid-template-columns:1fr 1fr}}
+.steps div{background:var(--paper);border:1px solid var(--line);border-radius:16px;padding:16px}
+.steps div::before{counter-increment:s;content:counter(s);display:grid;place-items:center;width:32px;height:32px;border-radius:50%;background:var(--brand);color:var(--brand-ink);font-weight:700;margin-bottom:8px}
+.steps b{display:block}
+.steps span{font-size:14.5px;color:var(--muted)}
+h2.sec{font-size:28px;margin:38px 0 6px}
+p.secsub{color:var(--muted);margin:0 0 16px}
+
+/* AI 工具 */
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
+.chip{appearance:none;font:inherit;font-weight:500;border:2px solid var(--line);background:var(--paper);color:var(--ink);border-radius:999px;padding:6px 16px;cursor:pointer;min-height:40px}
+.chip[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.tools{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:16px}
+.tool{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:8px;border-left:6px solid var(--c)}
+.tool .tag{align-self:flex-start;font-size:13px;font-weight:700;color:var(--c);background:var(--cs);padding:2px 10px;border-radius:999px}
+.tool h3{font-size:20px}
+.tool p{margin:0;font-size:15px;color:var(--muted)}
+.tool .use{font-size:14.5px;color:var(--ink)}
+.tool .use b{color:var(--c)}
+.tool a.go{margin-top:auto;font-weight:700;font-size:14.5px;color:var(--c);text-decoration:none}
+.tool a.go:hover{text-decoration:underline}
+.note{background:var(--soft);border-radius:14px;padding:14px 18px;font-size:15px;color:var(--muted);margin-top:20px}
+
+/* 分類頁 */
+.cathead{border-radius:24px;padding:28px 26px;background:var(--cs);border:1px solid var(--line);margin-bottom:24px}
+.cathead h1{font-size:clamp(30px,5vw,44px);color:var(--c)}
+.cathead p{margin:8px 0 0;color:var(--ink);max-width:40em}
+.cathead .ideas{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.cathead .ideas span{background:var(--paper);border-radius:999px;padding:4px 12px;font-size:14px;border:1px solid var(--line)}
+.split{display:grid;grid-template-columns:380px 1fr;gap:22px;align-items:start}
+@media (max-width:900px){.split{grid-template-columns:1fr}}
+.upload{background:var(--paper);border:1px solid var(--line);border-radius:20px;padding:20px;position:sticky;top:84px}
+@media (max-width:900px){.upload{position:static}}
+.upload h2{font-size:21px;margin-bottom:4px}
+.upload .hint{font-size:14px;color:var(--muted);margin:0 0 10px}
+.f{margin-top:12px}
+.f label{display:block;font-weight:700;font-size:15px;margin-bottom:3px}
+.f small{display:block;color:var(--muted);font-size:13px;margin-bottom:4px}
+input[type=text],textarea,select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:8px 11px}
+textarea{min-height:80px;resize:vertical}
+.drop{border:2px dashed var(--line);border-radius:14px;padding:16px;text-align:center;color:var(--muted);font-size:14.5px;cursor:pointer;background:var(--bg)}
+.drop.over{border-color:var(--c);background:var(--cs)}
+.drop input{display:none}
+.preview{margin-top:8px}
+.preview img,.preview video{border-radius:10px;max-height:200px}
+.preview audio{width:100%}
+.btn{appearance:none;font:inherit;font-weight:700;border-radius:999px;padding:10px 20px;cursor:pointer;border:2px solid var(--c,var(--brand));background:var(--c,var(--brand));color:#fff;min-height:44px}
+.btn.ghost{background:transparent;color:var(--c,var(--ink))}
+.btn.sm{padding:5px 14px;font-size:14px;min-height:36px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:14px}
+.msg{font-size:14px;color:var(--muted);min-height:1.4em;margin-top:6px}
+.msg.err{color:var(--visual)}
+.gal-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.gal-top h2{font-size:22px}
+.gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:16px}
+.work{background:var(--paper);border:1px solid var(--line);border-radius:18px;overflow:hidden;display:flex;flex-direction:column}
+.work .media{background:var(--soft);display:grid;place-items:center;min-height:120px}
+.work .media img{width:100%;aspect-ratio:4/3;object-fit:cover;display:block}
+.work .media video{width:100%;display:block;max-height:240px}
+.work .media audio{width:92%;margin:40px 0}
+.work .body{padding:14px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.work h3{font-size:18px}
+.work .by{font-size:13.5px;color:var(--muted)}
+.work .toolname{align-self:flex-start;font-size:12.5px;font-weight:700;color:var(--c);background:var(--cs);border-radius:999px;padding:1px 9px}
+.work details{font-size:14.5px}
+.work details summary{cursor:pointer;font-weight:700;color:var(--c)}
+.work details p{margin:6px 0 0;white-space:pre-wrap}
+.work .del{margin-top:auto;align-self:flex-end;background:none;border:0;color:var(--muted);font:inherit;font-size:13px;cursor:pointer;padding:6px}
+.empty{color:var(--muted);background:var(--paper);border:1px dashed var(--line);border-radius:18px;padding:30px;text-align:center}
+.wall{margin-top:30px}
+.wall h2{font-size:22px}
+.wall iframe{width:100%;height:620px;border:0;border-radius:18px;background:var(--paper)}
+
+/* 使用守則 */
+.rules{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+@media (max-width:700px){.rules{grid-template-columns:1fr}}
+.rule{background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:20px}
+.rule h3{font-size:20px;margin-bottom:6px}
+.rule p{margin:0;color:var(--muted)}
+
+/* 檢視作品大圖 */
+dialog{border:0;border-radius:20px;padding:0;max-width:min(860px,94vw);width:100%;background:var(--paper);color:var(--ink)}
+dialog::backdrop{background:rgba(0,0,0,.6)}
+.dlg{padding:20px}
+.dlg .media img,.dlg .media video{width:100%;border-radius:12px}
+.dlg h2{font-size:24px;margin:12px 0 4px}
+.dlg dl{margin:10px 0 0}
+.dlg dt{font-weight:700;color:var(--c);margin-top:10px}
+.dlg dd{margin:2px 0 0;white-space:pre-wrap}
+footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted);font-size:14px;text-align:center}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="container topin">
+    <a class="logo" href="#home"><span style="background:var(--visual)"></span><span style="background:var(--music)"></span><span style="background:var(--perform)"></span> AI × 藝術</a>
+    <nav class="main" aria-label="主選單">
+      <a href="#home">首頁</a>
+      <a href="#tools">AI 工具介紹</a>
+      <a href="#visual">視覺藝術</a>
+      <a href="#music">音樂藝術</a>
+      <a href="#perform">表演藝術</a>
+      <a href="#rules">使用守則</a>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+
+  <!-- ===== 首頁 ===== -->
+  <section class="page" id="home">
+    <div class="hero">
+      <div>
+        <h1>讓 AI 成為<br>創作的夥伴</h1>
+        <p>認識藝術領域常用的 AI 工具，在視覺藝術、音樂藝術、表演藝術三大類別中動手創作，並說明你如何與 AI 合作、哪些是你自己的想法。</p>
+        <div class="row"><a class="btn" style="--c:var(--brand);color:var(--brand-ink);text-decoration:none" href="#tools">先認識 AI 工具</a></div>
+      </div>
+      <div class="trio" aria-hidden="true"><div class="v">視覺</div><div class="m">音樂</div><div class="p">表演</div></div>
+    </div>
+
+    <h2 class="sec">三大創作類別</h2>
+    <p class="secsub">選一個類別，上傳你的 AI 創作並寫下解說。</p>
+    <div class="cards3">
+      <a class="cat" href="#visual" style="--c:var(--visual)"><h3>視覺藝術</h3><p>AI 生成圖像、風格轉換、色彩與構圖實驗、海報設計。</p></a>
+      <a class="cat" href="#music" style="--c:var(--music)"><h3>音樂藝術</h3><p>AI 作曲、配樂、歌詞與旋律發想、音色實驗。</p></a>
+      <a class="cat" href="#perform" style="--c:var(--perform)"><h3>表演藝術</h3><p>AI 影像、動作偵測、配音、劇本與分鏡發想。</p></a>
+    </div>
+
+    <h2 class="sec">創作四步驟</h2>
+    <p class="secsub">AI 是工具，作品的想法與判斷來自你。</p>
+    <div class="steps">
+      <div><b>發想</b><span>先想清楚想表達的感受或主題。</span></div>
+      <div><b>對話</b><span>寫提示詞與 AI 合作，多試幾次。</span></div>
+      <div><b>修改</b><span>挑選、修改、加入自己的創作。</span></div>
+      <div><b>解說</b><span>上傳作品，說明過程與自己的貢獻。</span></div>
+    </div>
+  </section>
+
+  <!-- ===== AI 工具 ===== -->
+  <section class="page" id="tools">
+    <h1 style="font-size:clamp(30px,5vw,44px)">AI 工具介紹</h1>
+    <p class="secsub" style="margin-top:8px">依類別篩選常見的 AI 創作工具。各工具的功能、費用與條款更新很快，使用前請到官方網站確認。</p>
+    <div class="filters" role="group" aria-label="篩選類別">
+      <button class="chip" type="button" data-f="all" aria-pressed="true">全部</button>
+      <button class="chip" type="button" data-f="visual" aria-pressed="false">視覺藝術</button>
+      <button class="chip" type="button" data-f="music" aria-pressed="false">音樂藝術</button>
+      <button class="chip" type="button" data-f="perform" aria-pressed="false">表演藝術</button>
+    </div>
+    <div class="tools" id="toolList"></div>
+    <div class="note">⚠️ 多數 AI 服務有年齡限制（常見為 13 歲以上需家長同意，或 18 歲以上），國中生使用前請由老師確認條款，必要時以教師帳號示範操作或全班共用。</div>
+  </section>
+
+  <!-- ===== 三個分類頁（由程式產生） ===== -->
+  <section class="page" id="visual"></section>
+  <section class="page" id="music"></section>
+  <section class="page" id="perform"></section>
+
+  <!-- ===== 使用守則 ===== -->
+  <section class="page" id="rules">
+    <h1 style="font-size:clamp(30px,5vw,44px)">AI 創作使用守則</h1>
+    <p class="secsub" style="margin-top:8px">負責任地使用 AI，是創作者的基本素養。</p>
+    <div class="rules">
+      <div class="rule"><h3>🏷️ 誠實標示</h3><p>作品中使用了 AI，就清楚寫出用了哪個工具、做了哪些部分，哪些是自己完成的。</p></div>
+      <div class="rule"><h3>©️ 尊重著作權</h3><p>不要用 AI 模仿特定藝術家、歌手的作品或聲音；不上傳別人的作品給 AI 改作。</p></div>
+      <div class="rule"><h3>🔒 保護隱私</h3><p>不上傳自己或同學的照片、聲音、姓名等個人資料到 AI 工具，也不製作他人的假影像。</p></div>
+      <div class="rule"><h3>🧠 保持思考</h3><p>AI 給的答案不一定正確或適合，要自己判斷、挑選與修改，讓作品有你的想法。</p></div>
+      <div class="rule"><h3>💬 友善回饋</h3><p>欣賞同學作品時，先說優點，再具體提出建議，尊重每個人的創作選擇。</p></div>
+      <div class="rule"><h3>✅ 遵守規定</h3><p>依各工具的年齡限制與學校規定使用，不確定時先問老師。</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>AI × 藝術｜藝術領域 AI 運用教學網站</footer>
+
+<dialog id="dlg" aria-labelledby="dlgTitle"><div class="dlg" id="dlgBody"></div></dialog>
+
+<script>
+/* =========================================================
+   教師設定區：在這裡修改內容
+   ---------------------------------------------------------
+   PADLET：若想讓全班作品集中在同一處，請在 Padlet 建立三個牆，
+   把「分享 → 嵌入」取得的網址（https://padlet.com/embed/xxxx）貼在引號內。
+   留空則不顯示。
+   ========================================================= */
+const PADLET = {
+  visual:  "",
+  music:   "",
+  perform: ""
+};
+
+const CATS = {
+  visual:  {name:"視覺藝術", c:"var(--visual)",  cs:"var(--visual-soft)",
+            intro:"用 AI 探索色彩、構圖與風格，再加入自己的觀察與修改，完成一件屬於你的視覺作品。",
+            ideas:["情緒色彩海報","對比色實驗","我的心情自畫像","校園風景再想像","AI 草圖 + 手繪完稿"],
+            accept:"image/*,video/*"},
+  music:   {name:"音樂藝術", c:"var(--music)",   cs:"var(--music-soft)",
+            intro:"用 AI 發想旋律、節奏與歌詞，聆聽、比較並調整，說出這段音樂表達了什麼。",
+            ideas:["一分鐘心情配樂","為畫作配上音樂","校歌風格改編","節奏實驗","歌詞共創"],
+            accept:"audio/*,video/*"},
+  perform: {name:"表演藝術", c:"var(--perform)", cs:"var(--perform-soft)",
+            intro:"用 AI 協助劇本、分鏡、影像或配音，結合肢體與聲音表演，完成一段演出紀錄。",
+            ideas:["AI 分鏡短劇","動作偵測舞蹈","角色配音","情緒默劇","故事接龍劇本"],
+            accept:"video/*,image/*,audio/*"}
+};
+
+const TOOLS = [
+  {cat:"visual", name:"Adobe Firefly", url:"https://firefly.adobe.com/", desc:"Adobe 的生成式 AI，可用文字產生圖像、擴展畫面或替換局部。", use:"用提示詞產生主視覺，再以生成填色修改局部。"},
+  {cat:"visual", name:"Canva 魔法工作室", url:"https://www.canva.com/", desc:"Canva 內建的 AI 功能，可生成圖像並直接排版成海報或簡報。", use:"製作情緒海報、展覽文宣。"},
+  {cat:"visual", name:"Google Gemini", url:"https://gemini.google.com/", desc:"Google 的 AI 助理，可對話生成與修改圖像，也能協助發想創作概念。", use:"以對話方式逐步修改作品構圖與色彩。"},
+  {cat:"visual", name:"ChatGPT", url:"https://chatgpt.com/", desc:"OpenAI 的 AI 助理，可生成圖像、修改圖片並協助撰寫創作說明。", use:"把草圖變成不同風格的版本做比較。"},
+  {cat:"visual", name:"Google Arts & Culture", url:"https://artsandculture.google.com/", desc:"Google 的藝術文化平台，收錄大量館藏與 AI 互動實驗。", use:"鑑賞名作、探索藝術風格與色彩。"},
+
+  {cat:"music", name:"Suno", url:"https://suno.com/", desc:"以文字描述產生含人聲的完整歌曲，可指定曲風與歌詞。", use:"輸入自己寫的歌詞，比較不同曲風的效果。"},
+  {cat:"music", name:"Google 音樂 AI（Lyria / Labs）", url:"https://labs.google/", desc:"Google 的音樂生成模型與實驗工具，可用文字產生樂段與配樂。", use:"為畫作或影片產生情境配樂。"},
+  {cat:"music", name:"AIVA", url:"https://www.aiva.ai/", desc:"偏向器樂與配樂的 AI 作曲工具，可選擇風格並編輯樂譜。", use:"創作古典、電影風格的純音樂。"},
+  {cat:"music", name:"BandLab", url:"https://www.bandlab.com/", desc:"線上錄音與編曲平台，提供 AI 起始樂段等輔助功能。", use:"以 AI 樂段為起點，自己加入錄音與編曲。"},
+  {cat:"music", name:"Udio", url:"https://www.udio.com/", desc:"AI 歌曲生成平台，近年因與唱片公司的授權合作，下載與匯出功能有限制。", use:"聆聽、比較 AI 歌曲的編曲與音色（使用前確認匯出規定）。"},
+
+  {cat:"perform", name:"Teachable Machine", url:"https://teachablemachine.withgoogle.com/", desc:"Google 的免費網頁工具，不寫程式就能訓練辨識圖像、聲音與姿勢的模型。", use:"訓練辨識舞蹈動作或表情，做成互動表演。"},
+  {cat:"perform", name:"Runway", url:"https://runwayml.com/", desc:"AI 影片生成與剪輯平台，可用文字或圖片產生動態影像。", use:"製作表演的背景影像或舞台視覺。"},
+  {cat:"perform", name:"Google Flow / Veo", url:"https://labs.google/", desc:"Google 的 AI 影片生成工具，可從文字或分鏡產生短片。", use:"將劇本分鏡轉成預覽影片。"},
+  {cat:"perform", name:"ElevenLabs", url:"https://elevenlabs.io/", desc:"AI 語音與音效工具，可做旁白、角色配音與音效。", use:"為短劇角色配音或製作音效（勿模仿真人聲音）。"},
+  {cat:"perform", name:"Canva 影片", url:"https://www.canva.com/", desc:"線上影片編輯，含 AI 剪輯與字幕等輔助功能。", use:"剪輯演出紀錄並加上字幕。"}
+];
+
+/* ========================================================= */
+
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+
+/* ---- 工具卡片 ---- */
+function renderTools(filter){
+  $("#toolList").innerHTML = TOOLS.filter(t => filter==="all" || t.cat===filter).map(t => {
+    const c = CATS[t.cat];
+    return `<article class="tool" style="--c:${c.c};--cs:${c.cs}">
+      <span class="tag">${c.name}</span>
+      <h3>${esc(t.name)}</h3>
+      <p>${esc(t.desc)}</p>
+      <div class="use"><b>課堂運用：</b>${esc(t.use)}</div>
+      <a class="go" href="${t.url}" target="_blank" rel="noopener">前往官網 ↗</a>
+    </article>`;
+  }).join("");
+}
+document.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".chip").forEach(x => x.setAttribute("aria-pressed", x===b ? "true":"false"));
+  renderTools(b.dataset.f);
+}));
+renderTools("all");
+
+/* ---- 作品儲存（IndexedDB，存在此瀏覽器） ---- */
+let dbp = null;
+function db(){
+  if(dbp) return dbp;
+  dbp = new Promise((res, rej) => {
+    const r = indexedDB.open("ai-arts-works", 1);
+    r.onupgradeneeded = () => r.result.createObjectStore("works", {keyPath:"id"});
+    r.onsuccess = () => res(r.result);
+    r.onerror = () => rej(r.error);
+  });
+  return dbp;
+}
+async function tx(mode, fn){
+  const d = await db();
+  return new Promise((res, rej) => {
+    const t = d.transaction("works", mode); const s = t.objectStore("works");
+    const out = fn(s);
+    t.oncomplete = () => res(out && out.result !== undefined ? out.result : out);
+    t.onerror = () => rej(t.error);
+  });
+}
+const putWork = w => tx("readwrite", s => s.put(w));
+const delWork = id => tx("readwrite", s => s.delete(id));
+async function listWorks(cat){
+  const all = await tx("readonly", s => s.getAll());
+  return (all || []).filter(w => w.cat===cat).sort((a,b) => b.created - a.created);
+}
+
+/* ---- 分類頁 ---- */
+const urls = [];
+function mediaHTML(w, big){
+  if(!w.file) return `<span style="color:var(--muted);padding:30px">（沒有附檔）</span>`;
+  const u = URL.createObjectURL(w.file); urls.push(u);
+  const t = w.file.type || "";
+  if(t.startsWith("image/")) return `<img src="${u}" alt="${esc(w.title)}">`;
+  if(t.startsWith("video/")) return `<video src="${u}" controls playsinline preload="metadata"></video>`;
+  if(t.startsWith("audio/")) return `<audio src="${u}" controls preload="metadata"></audio>`;
+  return `<span>${esc(w.file.name)}</span>`;
+}
+function buildCat(key){
+  const c = CATS[key]; const el = $("#"+key);
+  el.style.setProperty("--c", c.c); el.style.setProperty("--cs", c.cs);
+  const toolOpts = TOOLS.filter(t => t.cat===key).map(t => `<option>${esc(t.name)}</option>`).join("");
+  el.innerHTML = `
+    <div class="cathead">
+      <h1>${c.name}</h1>
+      <p>${c.intro}</p>
+      <div class="ideas">${c.ideas.map(i => `<span>💡 ${i}</span>`).join("")}</div>
+    </div>
+    <div class="split">
+      <form class="upload" novalidate>
+        <h2>上傳 AI 創作</h2>
+        <p class="hint">作品會儲存在這台裝置的瀏覽器中。</p>
+        <div class="f"><label>作品檔案</label>
+          <label class="drop"><input type="file" accept="${c.accept}"><span class="dt">點這裡選擇檔案，或把檔案拖曳進來</span></label>
+          <div class="preview"></div></div>
+        <div class="f"><label for="${key}-title">作品名稱</label><input type="text" id="${key}-title" required></div>
+        <div class="f"><label for="${key}-author">創作者</label><input type="text" id="${key}-author" placeholder="班級、座號、姓名"></div>
+        <div class="f"><label for="${key}-tool">使用的 AI 工具</label>
+          <select id="${key}-tool">${toolOpts}<option>其他</option></select></div>
+        <div class="f"><label for="${key}-prompt">提示詞（Prompt）</label><small>你對 AI 說了什麼？可以寫下最有效的一次。</small><textarea id="${key}-prompt"></textarea></div>
+        <div class="f"><label for="${key}-mine">我自己的貢獻</label><small>哪些是你修改、挑選或親手完成的？</small><textarea id="${key}-mine"></textarea></div>
+        <div class="f"><label for="${key}-desc">作品解說</label><small>想表達什麼？用了哪些藝術元素？過程中的發現？</small><textarea id="${key}-desc" style="min-height:110px"></textarea></div>
+        <div class="row"><button class="btn" type="submit">儲存作品</button><button class="btn ghost" type="reset">清除</button></div>
+        <div class="msg" role="status"></div>
+      </form>
+      <div>
+        <div class="gal-top"><h2>作品集</h2>
+          <div class="row" style="margin:0"><button class="btn sm ghost exp" type="button">下載作品解說（文字）</button></div></div>
+        <div class="gallery" aria-live="polite"></div>
+        ${PADLET[key] ? `<div class="wall"><h2>全班作品牆</h2><p class="secsub">把作品與解說貼到全班共用的 Padlet。</p><iframe src="${esc(PADLET[key])}" title="${c.name} 全班作品牆" allow="camera;microphone;geolocation" loading="lazy"></iframe></div>` : ""}
+      </div>
+    </div>`;
+
+  const form = $("form", el), input = $("input[type=file]", el), drop = $(".drop", el), prev = $(".preview", el), msg = $(".msg", el);
+  let file = null;
+  const setFile = f => {
+    if(!f) return;
+    if(f.size > 80*1024*1024){ msg.textContent = "檔案超過 80MB，請壓縮或剪短後再上傳。"; msg.className="msg err"; return; }
+    file = f; $(".dt", drop).textContent = "已選擇：" + f.name;
+    prev.innerHTML = mediaHTML({file:f, title:f.name}); msg.textContent=""; msg.className="msg";
+  };
+  input.addEventListener("change", () => setFile(input.files[0]));
+  ["dragenter","dragover"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("over"); }));
+  ["dragleave","drop"].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("over"); }));
+  drop.addEventListener("drop", e => setFile(e.dataTransfer.files[0]));
+  form.addEventListener("reset", () => { file=null; prev.innerHTML=""; $(".dt", drop).textContent="點這裡選擇檔案，或把檔案拖曳進來"; msg.textContent=""; });
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    const v = id => $("#"+key+"-"+id).value.trim();
+    if(!v("title")){ msg.textContent="請填寫作品名稱。"; msg.className="msg err"; return; }
+    if(!file && !v("desc")){ msg.textContent="請上傳作品檔案或寫下作品解說。"; msg.className="msg err"; return; }
+    const w = {id: Date.now()+"-"+Math.random().toString(36).slice(2,7), cat:key, created:Date.now(),
+      title:v("title"), author:v("author"), tool:v("tool"), prompt:v("prompt"), mine:v("mine"), desc:v("desc"), file};
+    try{
+      await putWork(w); form.reset(); msg.textContent="已儲存！"; msg.className="msg"; renderGallery(key);
+    }catch(err){ msg.textContent="儲存失敗：瀏覽器空間可能不足，或在無痕模式下無法儲存。"; msg.className="msg err"; }
+  });
+  $(".exp", el).addEventListener("click", () => exportText(key));
+  renderGallery(key);
+}
+
+async function renderGallery(key){
+  const el = $("#"+key), g = $(".gallery", el);
+  let works = [];
+  try{ works = await listWorks(key); }catch(e){ g.innerHTML = `<div class="empty">此瀏覽器無法儲存作品（可能是無痕模式）。</div>`; return; }
+  if(!works.length){ g.innerHTML = `<div class="empty">還沒有作品，從左邊上傳第一件 ${CATS[key].name} 的 AI 創作吧！</div>`; return; }
+  g.innerHTML = works.map(w => `
+    <article class="work">
+      <div class="media">${mediaHTML(w)}</div>
+      <div class="body">
+        <span class="toolname">${esc(w.tool)}</span>
+        <h3>${esc(w.title)}</h3>
+        <div class="by">${esc(w.author || "未署名")}・${new Date(w.created).toLocaleDateString("zh-TW")}</div>
+        ${w.desc ? `<details><summary>作品解說</summary><p>${esc(w.desc)}</p></details>` : ""}
+        <div class="row" style="margin-top:auto;justify-content:space-between">
+          <button class="btn sm ghost view" type="button" data-id="${w.id}">完整檢視</button>
+          <button class="del" type="button" data-id="${w.id}">刪除</button>
+        </div>
+      </div>
+    </article>`).join("");
+  g.querySelectorAll(".del").forEach(b => b.addEventListener("click", async () => {
+    if(confirm("確定刪除這件作品嗎？")){ await delWork(b.dataset.id); renderGallery(key); }
+  }));
+  g.querySelectorAll(".view").forEach(b => b.addEventListener("click", () => openWork(works.find(w => w.id===b.dataset.id))));
+}
+
+function openWork(w){
+  const c = CATS[w.cat], d = $("#dlg"), body = $("#dlgBody");
+  body.style.setProperty("--c", c.c);
+  body.innerHTML = `
+    <div class="media">${mediaHTML(w, true)}</div>
+    <h2 id="dlgTitle">${esc(w.title)}</h2>
+    <div class="by" style="color:var(--muted)">${esc(w.author || "未署名")}・${c.name}・${esc(w.tool)}</div>
+    <dl>
+      ${w.prompt ? `<dt>提示詞</dt><dd>${esc(w.prompt)}</dd>` : ""}
+      ${w.mine ? `<dt>我自己的貢獻</dt><dd>${esc(w.mine)}</dd>` : ""}
+      ${w.desc ? `<dt>作品解說</dt><dd>${esc(w.desc)}</dd>` : ""}
+    </dl>
+    <div class="row"><button class="btn" type="button" id="dlgClose" style="--c:${c.c}">關閉</button></div>`;
+  $("#dlgClose").addEventListener("click", () => d.close());
+  d.showModal();
+}
+$("#dlg").addEventListener("click", e => { if(e.target.id==="dlg") e.target.close(); });
+$("#dlg").addEventListener("close", () => { $("#dlgBody").innerHTML = ""; });
+
+async function exportText(key){
+  const works = await listWorks(key);
+  if(!works.length){ alert("目前沒有作品可以下載。"); return; }
+  const lines = [`${CATS[key].name}｜AI 創作作品解說`, ""];
+  works.forEach((w,i) => {
+    lines.push(`【${i+1}】${w.title}`, `創作者：${w.author||"未署名"}`, `日期：${new Date(w.created).toLocaleDateString("zh-TW")}`,
+      `AI 工具：${w.tool}`, `檔案：${w.file ? w.file.name : "無"}`, `提示詞：${w.prompt||"—"}`, `我自己的貢獻：${w.mine||"—"}`, `作品解說：${w.desc||"—"}`, "");
+  });
+  const blob = new Blob(["\uFEFF"+lines.join("\n")], {type:"text/plain;charset=utf-8"});
+  const u = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = u; a.download = `${CATS[key].name}_AI創作解說.txt`; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 4000);
+}
+
+Object.keys(CATS).forEach(buildCat);
+
+/* ---- 頁面切換 ---- */
+function route(){
+  const id = (location.hash || "#home").slice(1);
+  const target = document.getElementById(id) && document.getElementById(id).classList.contains("page") ? id : "home";
+  document.querySelectorAll("section.page").forEach(s => s.classList.toggle("on", s.id===target));
+  document.querySelectorAll("nav.main a").forEach(a => { if(a.getAttribute("href")==="#"+target) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current"); });
+  window.scrollTo(0,0);
+}
+window.addEventListener("hashchange", route);
+route();
+</script>
+</body>
+</html>
