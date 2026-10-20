@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>AI × 藝術｜藝術領域 AI 運用教學網站</title>
+<!-- 上傳到 GitHub 時，請把這個檔案命名為 index.html -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
@@ -99,6 +100,30 @@ p.secsub{color:var(--muted);margin:0 0 16px}
 .tool a.go:hover{text-decoration:underline}
 .note{background:var(--soft);border-radius:14px;padding:14px 18px;font-size:15px;color:var(--muted);margin-top:20px}
 
+/* 互動工具成果 */
+.projects{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
+.proj{background:var(--paper);border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+.proj .band{background:var(--cs);padding:18px 20px;display:flex;align-items:center;gap:14px;border-bottom:4px solid var(--c)}
+.proj .ic{font-size:38px;line-height:1;width:58px;height:58px;display:grid;place-items:center;background:var(--paper);border-radius:16px;flex:none}
+.proj .band h3{font-size:20px}
+.proj .band .tag{font-size:13px;font-weight:700;color:var(--c)}
+.proj .pb{padding:16px 20px 20px;display:flex;flex-direction:column;gap:10px;flex:1}
+.proj .lbl{font-size:13px;font-weight:700;color:var(--c);letter-spacing:.05em}
+.proj .ais{display:flex;flex-wrap:wrap;gap:6px}
+.proj .ais span{font-size:13.5px;border:1.5px solid var(--c);color:var(--c);border-radius:999px;padding:1px 10px;font-weight:500}
+.proj p{margin:2px 0 0;font-size:15px}
+.proj .meta{font-size:13.5px;color:var(--muted)}
+.proj .open{margin-top:auto;align-self:flex-start;text-decoration:none;display:inline-flex;align-items:center}
+.proj .open[aria-disabled="true"]{opacity:.45;pointer-events:none}
+.proj .local{font-size:12.5px;color:var(--muted)}
+.proj .rm{background:none;border:0;color:var(--muted);font:inherit;font-size:13px;cursor:pointer;align-self:flex-end;padding:4px}
+.adder{margin-top:30px;background:var(--paper);border:1px solid var(--line);border-radius:18px;padding:16px 20px}
+.adder summary{cursor:pointer;font-weight:700;font-size:17px}
+.adder-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px 14px}
+.adder-grid .full{grid-column:1/-1}
+@media (max-width:600px){.adder-grid{grid-template-columns:1fr}}
+code{background:var(--soft);padding:1px 6px;border-radius:6px;font-size:.92em}
+
 /* 分類頁 */
 .cathead{border-radius:24px;padding:28px 26px;background:var(--cs);border:1px solid var(--line);margin-bottom:24px}
 .cathead h1{font-size:clamp(30px,5vw,44px);color:var(--c)}
@@ -177,6 +202,7 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted);font-s
     <nav class="main" aria-label="主選單">
       <a href="#home">首頁</a>
       <a href="#tools">AI 工具介紹</a>
+      <a href="#works">互動工具成果</a>
       <a href="#visual">視覺藝術</a>
       <a href="#music">音樂藝術</a>
       <a href="#perform">表演藝術</a>
@@ -198,6 +224,13 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted);font-s
       <div class="trio" aria-hidden="true"><div class="v">視覺</div><div class="m">音樂</div><div class="p">表演</div></div>
     </div>
 
+    <h2 class="sec">網站內容</h2>
+    <p class="secsub">三個區塊，從認識工具、體驗教學互動工具，到上傳自己的創作。</p>
+    <div class="cards3" style="margin-bottom:10px">
+      <a class="cat" href="#tools" style="--c:var(--ink)"><h3>① AI 工具介紹</h3><p>依視覺、音樂、表演三類，認識常見的 AI 創作工具。</p></a>
+      <a class="cat" href="#works" style="--c:var(--ink)"><h3>② 互動工具成果</h3><p>教學用互動式 AI 工具的設計成果：網頁連結、使用的 AI 與設計理念。</p></a>
+      <a class="cat" href="#visual" style="--c:var(--ink)"><h3>③ 創作上傳區</h3><p>上傳自己的 AI 創作，寫下提示詞、自己的貢獻與作品解說。</p></a>
+    </div>
     <h2 class="sec">三大創作類別</h2>
     <p class="secsub">選一個類別，上傳你的 AI 創作並寫下解說。</p>
     <div class="cards3">
@@ -228,6 +261,37 @@ footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted);font-s
     </div>
     <div class="tools" id="toolList"></div>
     <div class="note">⚠️ 多數 AI 服務有年齡限制（常見為 13 歲以上需家長同意，或 18 歲以上），國中生使用前請由老師確認條款，必要時以教師帳號示範操作或全班共用。</div>
+  </section>
+
+  <!-- ===== 互動工具成果 ===== -->
+  <section class="page" id="works">
+    <h1 style="font-size:clamp(30px,5vw,44px)">教學用互動式 AI 工具設計成果</h1>
+    <p class="secsub" style="margin-top:8px">運用 AI 設計、可直接在課堂使用的互動網頁與工具。點「開啟工具」即可體驗。</p>
+    <div class="filters" role="group" aria-label="篩選成果類別">
+      <button class="chip wchip" type="button" data-f="all" aria-pressed="true">全部</button>
+      <button class="chip wchip" type="button" data-f="visual" aria-pressed="false">視覺藝術</button>
+      <button class="chip wchip" type="button" data-f="music" aria-pressed="false">音樂藝術</button>
+      <button class="chip wchip" type="button" data-f="perform" aria-pressed="false">表演藝術</button>
+    </div>
+    <div class="projects" id="projList"></div>
+
+    <details class="adder">
+      <summary>➕ 新增一項成果（教師用）</summary>
+      <p class="secsub" style="margin-top:8px">填好後按「產生程式碼」，把產生的文字複製，貼到 index.html 裡 <code>PROJECTS</code> 清單中，再上傳到 GitHub，所有人就都看得到。按「先在本機預覽」只會顯示在這台電腦。</p>
+      <div class="adder-grid">
+        <div class="f"><label for="p-title">成果名稱</label><input type="text" id="p-title"></div>
+        <div class="f"><label for="p-cat">類別</label><select id="p-cat"><option value="visual">視覺藝術</option><option value="music">音樂藝術</option><option value="perform">表演藝術</option></select></div>
+        <div class="f full"><label for="p-url">網頁連結</label><input type="text" id="p-url" placeholder="https://"></div>
+        <div class="f full"><label for="p-ai">使用的 AI</label><small>用逗號分隔，例如：Claude, Gemini, Suno</small><input type="text" id="p-ai"></div>
+        <div class="f full"><label for="p-idea">設計理念</label><textarea id="p-idea"></textarea></div>
+        <div class="f full"><label for="p-use">課堂使用方式</label><textarea id="p-use" style="min-height:60px"></textarea></div>
+        <div class="f"><label for="p-icon">代表圖示（一個 emoji）</label><input type="text" id="p-icon" placeholder="🎨" maxlength="4"></div>
+        <div class="f"><label for="p-grade">適用對象</label><input type="text" id="p-grade" placeholder="國中八年級"></div>
+      </div>
+      <div class="row"><button class="btn" type="button" id="p-gen" style="--c:var(--brand);color:var(--brand-ink)">產生程式碼</button><button class="btn ghost" type="button" id="p-local" style="--c:var(--ink)">先在本機預覽</button></div>
+      <textarea id="p-code" readonly hidden aria-label="產生的程式碼" style="margin-top:12px;min-height:170px;font-family:ui-monospace,Consolas,monospace;font-size:13.5px"></textarea>
+      <div class="msg" id="p-msg" role="status"></div>
+    </details>
   </section>
 
   <!-- ===== 三個分類頁（由程式產生） ===== -->
@@ -283,6 +347,34 @@ const CATS = {
             accept:"video/*,image/*,audio/*"}
 };
 
+/* ---------------------------------------------------------
+   ② 教學用互動式 AI 工具設計成果
+   每一項用 { } 包起來，項目之間用逗號分隔。
+   cat：visual（視覺）/ music（音樂）/ perform（表演）
+   url：網頁連結，還沒有連結就留 ""
+   --------------------------------------------------------- */
+const PROJECTS = [
+  {cat:"visual", icon:"🐱", title:"對比色貓咪彩繪玻璃", url:"",
+   ai:["Claude"], grade:"國中八年級",
+   idea:"以彩繪玻璃貓咪為主題，讓學生在塗色遊戲中觀察與運用對比色（互補色），體驗色彩並置時產生的強烈視覺效果。",
+   use:"先講解色相環與互補色，再讓學生用遊戲完成配色，最後分享自己選色的理由。"},
+  {cat:"visual", icon:"🔴", title:"點點心情小卡", url:"",
+   ai:["Claude"], grade:"國中八年級",
+   idea:"結合草間彌生的圓點語彙與 SEL 自我覺察，學生選一個代表心情的顏色，依心情強弱選擇點點大小貼滿點點牆，並寫下心情紀錄。",
+   use:"課堂開始時進行情緒暖身，下載的心情小卡可上傳到 Padlet 分享。"},
+  {cat:"music", icon:"🎵", title:"（範例）情緒配樂實驗室", url:"",
+   ai:["Suno"], grade:"國中",
+   idea:"請在這裡寫下設計理念：想讓學生學到什麼？為什麼用 AI？",
+   use:"請在這裡寫下課堂使用方式。"},
+  {cat:"perform", icon:"🎭", title:"（範例）動作偵測舞蹈遊戲", url:"",
+   ai:["Teachable Machine"], grade:"國中",
+   idea:"請在這裡寫下設計理念：想讓學生學到什麼？為什麼用 AI？",
+   use:"請在這裡寫下課堂使用方式。"}
+];
+
+/* ---------------------------------------------------------
+   ① AI 工具介紹
+   --------------------------------------------------------- */
 const TOOLS = [
   {cat:"visual", name:"Adobe Firefly", url:"https://firefly.adobe.com/", desc:"Adobe 的生成式 AI，可用文字產生圖像、擴展畫面或替換局部。", use:"用提示詞產生主視覺，再以生成填色修改局部。"},
   {cat:"visual", name:"Canva 魔法工作室", url:"https://www.canva.com/", desc:"Canva 內建的 AI 功能，可生成圖像並直接排版成海報或簡報。", use:"製作情緒海報、展覽文宣。"},
@@ -326,6 +418,60 @@ document.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () =
   renderTools(b.dataset.f);
 }));
 renderTools("all");
+
+/* ---- 互動工具成果 ---- */
+let projFilter = "all";
+function localProjects(){ try{ return JSON.parse(localStorage.getItem("ai-arts-projects") || "[]"); }catch(e){ return []; } }
+function saveLocalProjects(a){ try{ localStorage.setItem("ai-arts-projects", JSON.stringify(a)); return true; }catch(e){ return false; } }
+function safeUrl(u){ return /^https?:\/\//i.test(u || "") ? u : ""; }
+function renderProjects(){
+  const all = PROJECTS.map(p => ({...p, local:false})).concat(localProjects().map(p => ({...p, local:true})));
+  const list = all.filter(p => projFilter==="all" || p.cat===projFilter);
+  if(!list.length){ $("#projList").innerHTML = `<div class="empty">這個類別還沒有成果。</div>`; return; }
+  $("#projList").innerHTML = list.map(p => {
+    const c = CATS[p.cat] || CATS.visual, u = safeUrl(p.url);
+    return `<article class="proj" style="--c:${c.c};--cs:${c.cs}">
+      <div class="band"><div class="ic" aria-hidden="true">${esc(p.icon || "✨")}</div><div><div class="tag">${c.name}</div><h3>${esc(p.title)}</h3></div></div>
+      <div class="pb">
+        <div><div class="lbl">使用的 AI</div><div class="ais">${(p.ai||[]).map(a => `<span>${esc(a)}</span>`).join("") || "—"}</div></div>
+        <div><div class="lbl">設計理念</div><p>${esc(p.idea || "—")}</p></div>
+        ${p.use ? `<div><div class="lbl">課堂使用方式</div><p>${esc(p.use)}</p></div>` : ""}
+        ${p.grade ? `<div class="meta">適用對象：${esc(p.grade)}</div>` : ""}
+        <a class="btn sm open" style="--c:${c.c}" ${u ? `href="${esc(u)}" target="_blank" rel="noopener"` : `aria-disabled="true"`}>${u ? "開啟工具 ↗" : "連結準備中"}</a>
+        ${p.local ? `<span class="local">（僅在本機預覽）</span><button class="rm" type="button" data-t="${esc(p.title)}">移除預覽</button>` : ""}
+      </div></article>`;
+  }).join("");
+  $("#projList").querySelectorAll(".rm").forEach(b => b.addEventListener("click", () => {
+    saveLocalProjects(localProjects().filter(p => p.title !== b.dataset.t)); renderProjects();
+  }));
+}
+document.querySelectorAll(".wchip").forEach(b => b.addEventListener("click", () => {
+  document.querySelectorAll(".wchip").forEach(x => x.setAttribute("aria-pressed", x===b ? "true":"false"));
+  projFilter = b.dataset.f; renderProjects();
+}));
+function readProjForm(){
+  const v = id => $("#p-"+id).value.trim();
+  return {cat:v("cat"), icon:v("icon") || "✨", title:v("title"), url:v("url"),
+    ai:v("ai").split(/[,，、]/).map(s => s.trim()).filter(Boolean), grade:v("grade"), idea:v("idea"), use:v("use")};
+}
+function pmsg(t, err){ $("#p-msg").textContent = t; $("#p-msg").className = "msg" + (err ? " err" : ""); }
+$("#p-gen").addEventListener("click", () => {
+  const p = readProjForm(); if(!p.title) return pmsg("請填寫成果名稱。", true);
+  if(p.url && !safeUrl(p.url)) return pmsg("網頁連結需以 https:// 開頭。", true);
+  const J = x => JSON.stringify(x);
+  const code = `  {cat:${J(p.cat)}, icon:${J(p.icon)}, title:${J(p.title)}, url:${J(p.url)},\n   ai:${J(p.ai)}, grade:${J(p.grade)},\n   idea:${J(p.idea)},\n   use:${J(p.use)}},`;
+  const box = $("#p-code"); box.value = code; box.hidden = false; box.focus(); box.select();
+  pmsg("已產生！複製上面的文字，貼到 PROJECTS 清單裡（第一個 [ 的下一行）。");
+});
+$("#p-local").addEventListener("click", () => {
+  const p = readProjForm(); if(!p.title) return pmsg("請填寫成果名稱。", true);
+  if(p.url && !safeUrl(p.url)) return pmsg("網頁連結需以 https:// 開頭。", true);
+  const a = localProjects(); a.push(p);
+  const ok = saveLocalProjects(a);
+  pmsg(ok ? "已加入本機預覽。" : "這個瀏覽器無法儲存預覽。", !ok);
+  renderProjects();
+});
+renderProjects();
 
 /* ---- 作品儲存（IndexedDB，存在此瀏覽器） ---- */
 let dbp = null;
